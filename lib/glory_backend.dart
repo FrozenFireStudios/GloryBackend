@@ -14,3 +14,4 @@ export 'glory_backend_model.dart';
 export 'glory_backend_sink.dart';
 
 export 'controller/health_controller.dart';
+export 'controller/data_controller.dart';
