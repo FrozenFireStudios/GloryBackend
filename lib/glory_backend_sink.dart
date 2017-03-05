@@ -100,7 +100,10 @@ class GloryBackendSink extends RequestSink {
         renderAuthorizationPageHTML: renderLoginPage));
 
     router.route("/health").generate(() => new HealthController());
+
     router.route("/data").generate(() => new DataController());
+
+    router.route("/matches").generate(() => new MatchController());
   }
 
   /// Final initialization method for this instance.
