@@ -16,4 +16,3 @@ export 'glory_backend_sink.dart';
 export 'controller/health_controller.dart';
 export 'controller/data_controller.dart';
 export 'controller/match_controller.dart';
-export 'controller/item_controller.dart';

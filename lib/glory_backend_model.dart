@@ -6,3 +6,4 @@
 export 'model/user.dart';
 export 'model/vg_match.dart';
 export 'model/participant.dart';
+export 'model/item.dart';

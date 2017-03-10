@@ -101,7 +101,7 @@ class GloryBackendSink extends RequestSink {
 
     router.route("/health").generate(() => new HealthController());
 
-    router.route("/items").generate(() => new ItemController());
+    router.route("/items").generate(() => new ManagedObjectController<Item>());
 
     router.route("/data").generate(() => new DataController());
 
