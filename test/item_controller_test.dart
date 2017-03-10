@@ -119,9 +119,9 @@ Active: Reduces attack speed of nearby enemies by 65% for 5 seconds in a 4-meter
 
     expect(deleteResponse, hasStatus(200));
 
-    var getReq = app.client.request("/items");
+    var getReq = app.client.request("/items/1");
     var getResponse = await getReq.get();
 
-    expect(getResponse, hasResponse(200, []));
+    expect(getResponse, hasStatus(404));
   });
 }
