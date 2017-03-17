@@ -2,18 +2,17 @@ import 'harness/app.dart';
 
 Future main() async {
   TestApplication app = new TestApplication();
-  List<String> tokens;
 
   setUp(() async {
     await app.start();
 
     var query1 = new Query<Item>()
-        ..values.name = "Halcyon Potion"
-        ..values.description = "Consume: Restore 80 health and 40 energy instantly, then 200 health & 65 energy over 25 seconds."
-        ..values.aliasString = "*1000_Item_HalcyonPotion*,Mulled Wine"
-        ..values.cost = 25
-        ..values.typesString = "other"
-        ..values.tier = 1;
+      ..values.name = "Halcyon Potion"
+      ..values.description = "Consume: Restore 80 health and 40 energy instantly, then 200 health & 65 energy over 25 seconds."
+      ..values.aliasString = "*1000_Item_HalcyonPotion*,Mulled Wine"
+      ..values.cost = 25
+      ..values.typesString = "other"
+      ..values.tier = 1;
 
     await query1.insert();
 
@@ -100,7 +99,7 @@ Active: Reduces attack speed of nearby enemies by 65% for 5 seconds in a 4-meter
       ..json = {
         "description": "new description"
       };
-    var response = await req.post();
+    var response = await req.put();
 
     expect(response, hasResponse(200, {
         "id": 2,

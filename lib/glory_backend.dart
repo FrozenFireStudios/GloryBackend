@@ -13,7 +13,6 @@ export 'package:scribe/scribe.dart';
 export 'glory_backend_model.dart';
 export 'glory_backend_sink.dart';
 
-export 'controller/character_controller.dart';
-export 'controller/data_controller.dart';
 export 'controller/health_controller.dart';
 export 'controller/match_controller.dart';
+export 'controller/matchup_controller.dart';
