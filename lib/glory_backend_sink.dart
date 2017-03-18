@@ -99,10 +99,24 @@ class GloryBackendSink extends RequestSink {
     router.route("/auth/code").generate(() => new AuthCodeController(authServer,
         renderAuthorizationPageHTML: renderLoginPage));
 
-    router.route("/characters/[:id]").generate(() => new ManagedObjectController<Character>());
+    router
+        .route("/admin/characters/[:id]")
+        .pipe(new Authorizer.basic(authServer))
+        .generate(() => new ManagedObjectController<Character>());
+
+    router
+        .route("/admin/items/[:id]")
+        .pipe(new Authorizer.basic(authServer))
+        .generate(() => new ManagedObjectController<Item>());
+
+    router
+        .route("/admin/matches")
+        .pipe(new Authorizer.basic(authServer))
+        .generate(() => new MatchController());
+
+    router.route("/characters").generate(() => new CharacterController());
     router.route("/health").generate(() => new HealthController());
-    router.route("/items/[:id]").generate(() => new ManagedObjectController<Item>());
-    router.route("/matches").generate(() => new MatchController());
+    router.route("/items").generate(() => new ItemController());
     router.route("/matchups").generate(() => new MatchupController());
   }
 
