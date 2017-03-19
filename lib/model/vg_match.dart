@@ -2,7 +2,7 @@ import '../glory_backend.dart';
 import 'dart:convert';
 
 class VGMatch extends ManagedObject<_VGMatch> implements _VGMatch {
-  static List<VGMatch> matchesFrom(String json) {
+  static List<VGMatch> matchesFrom(String json, List<Item> items) {
     Map jsonDict = JSON.decode(json);
     List errors = jsonDict["errors"];
 
@@ -28,7 +28,7 @@ class VGMatch extends ManagedObject<_VGMatch> implements _VGMatch {
       List<String> participantIDs = data.map((Map p) => p["id"] as String).toList();
       List<Participant> rosterParticipants = participantIDs.map((id) => participants[id]).where((p) => p != null).toList();
 
-      if (rosterParticipants.length == 3) {
+      if (rosterParticipants.length == 3 && Participant.assignBuildsAndRolesForTeam(rosterParticipants, items)) {
         String rosterID = m["id"];
         rosters[rosterID] = rosterParticipants;
       }

@@ -5,6 +5,11 @@ import 'dart:convert';
 class MatchController extends HTTPController {
   @httpGet
   Future<Response> getMatches() async {
+    var itemQuery = new Query<Item>()
+      ..where.tier = whereEqualTo(3);
+
+    List<Item> items = await itemQuery.fetch();
+
     var completer = new Completer();
     var contents = new StringBuffer();
 
@@ -25,7 +30,7 @@ class MatchController extends HTTPController {
             contents.write(data);
           }, onDone: () {
             String json = contents.toString();
-            List<VGMatch> matches = VGMatch.matchesFrom(json);
+            List<VGMatch> matches = VGMatch.matchesFrom(json, items);
             List matchMaps = matches.map((m) {
               List pMaps = m.participants.map((p) => p.asMap()).toList();
               return {
