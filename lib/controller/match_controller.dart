@@ -18,7 +18,7 @@ class MatchController extends HTTPController {
     var completer = new Completer();
     var contents = new StringBuffer();
 
-    int offset = (page ?? 1) - 1 * 50;
+    int offset = ((page ?? 1) - 1) * 50;
     createdAt ??= "2017-03-01T00:00:00Z";
 
     var urlString = Uri.encodeFull("https://api.dc01.gamelockerapp.com/shards/${shard}/matches?filter[playerNames]=${playerName}&filter[createdAt-start]=${createdAt}&filter[gameMode]=ranked,casual,private&page[limit]=50&page[offset]=${offset}");
@@ -53,7 +53,9 @@ class MatchController extends HTTPController {
             completer.complete(new Response.ok(matchMaps));
           });
         } else {
-          completer.complete(response);
+          print("\nStatus Code: ${response.statusCode}\n");
+          print("URL: ${urlString}\n");
+          completer.complete(new Response.serverError());
         }
       });
 
