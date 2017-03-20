@@ -47,7 +47,7 @@ class Participant extends ManagedObject<_Participant> implements _Participant {
     }
 
     double csRatio = participants[0].totalCS / participants[1].totalCS;
-    if (csRatio > 0.5 ) {
+    if (csRatio > 0.6) {
       return false;
     }
 
