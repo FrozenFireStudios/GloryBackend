@@ -4,7 +4,12 @@ import 'dart:convert';
 
 class MatchController extends HTTPController {
   @httpGet
-  Future<Response> getMatches() async {
+  Future<Response> getMatches(
+      @HTTPQuery("playerName") String playerName,
+      @HTTPQuery("shard") String shard,
+      {@HTTPQuery("page") int page,
+      @HTTPQuery("createdAt") String createdAt}) async {
+
     var itemQuery = new Query<Item>()
       ..where.tier = whereEqualTo(3);
 
@@ -13,8 +18,13 @@ class MatchController extends HTTPController {
     var completer = new Completer();
     var contents = new StringBuffer();
 
+    int offset = (page ?? 1) - 1 * 50;
+    createdAt ??= "2017-03-01T00:00:00Z";
+
+    var urlString = Uri.encodeFull("https://api.dc01.gamelockerapp.com/shards/${shard}/matches?filter[playerNames]=${playerName}&filter[createdAt-start]=${createdAt}&filter[gameMode]=ranked,casual,private&page[limit]=50&page[offset]=${offset}");
+
     HttpClient client = new HttpClient();
-    client.getUrl(Uri.parse("https://api.dc01.gamelockerapp.com/shards/na/matches?filter%5BcreatedAt-start%5D=2017-03-01T00:00:00Z"))
+    client.getUrl(Uri.parse(urlString))
       .then((HttpClientRequest request) {
         String apiKey = Platform.environment["VG_API_KEY"];
         request.headers.set("Authorization", "Bearer ${apiKey}");
