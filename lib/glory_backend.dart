@@ -18,4 +18,5 @@ export 'controller/data_controller.dart';
 export 'controller/health_controller.dart';
 export 'controller/item_controller.dart';
 export 'controller/match_controller.dart';
+export 'controller/match_data_controller.dart';
 export 'controller/matchup_controller.dart';

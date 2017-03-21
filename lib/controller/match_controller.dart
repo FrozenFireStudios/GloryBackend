@@ -13,16 +13,25 @@ class MatchController extends HTTPController {
 
     var itemQuery = new Query<Item>()
       ..where.tier = whereEqualTo(3);
-
     List<Item> items = await itemQuery.fetch();
-
-    var completer = new Completer();
-    var contents = new StringBuffer();
 
     int offset = ((page ?? 1) - 1) * 50;
     createdAt ??= "2017-03-01T00:00:00Z";
 
-    String urlString = Uri.encodeFull("https://api.dc01.gamelockerapp.com/shards/${shard}/matches?filter[playerNames]=${playerName}&filter[createdAt-start]=${createdAt}&filter[gameMode]=ranked,casual,private&page[limit]=50&page[offset]=${offset}");
+    var queryParams = {
+      "filter[playerNames]": playerName,
+      "filter[createdAt-start]": createdAt,
+      "filter[gameMode]": "ranked,casual,private",
+      "page[limit]": "50",
+      "page[offset]": "$offset"
+    };
+
+    var queryString = queryParams.keys.map((key) {
+      return "${Uri.encodeQueryComponent(key)}=${Uri.encodeQueryComponent(queryParams[key])}";
+    }).join("&");
+
+    var urlString = "https://api.dc01.gamelockerapp.com/shards/${shard}/matches?$queryString";
+
     String apiKey = Platform.environment["VG_API_KEY"];
     Map<String, String> headers = {
       "Authorization": "Bearer ${apiKey}",
@@ -31,30 +40,48 @@ class MatchController extends HTTPController {
       "Accept-Encoding": "gzip"
     };
 
-    http.get(urlString, headers: headers)
-    .then((response) {
-      if (response.statusCode == 200) {
-        String json = response.body;
-        List<VGMatch> matches = VGMatch.matchesFrom(json, items);
-        List matchMaps = matches.map((m) {
-          List pMaps = m.participants.map((p) => p.asMap()).toList();
-          return {
-            "id": m.id,
-            "duration": m.duration,
-            "participants": pMaps
-          };
-        }).toList();
+    var response = await http.get(urlString, headers: headers);
+    if (response.statusCode == 200) {
+      var json = response.body;
+      var matches = VGMatch.matchesFrom(json, items);
+      var savedMatchCount = await saveMatches(matches);
 
-        print("MARCUS:\n${matchMaps}\n");
-        
-        completer.complete(new Response.ok("Got ${matchMaps.length} matches"));
-      } else {
-        print("\nStatus Code: ${response.statusCode}\n");
-        print("URL: ${urlString}\n");
-        completer.complete(new Response.serverError());
-      }
-    });
+      return new Response.ok("Saved ${savedMatchCount} matches");
+    }
 
-    return completer.future;
+    print("\nMadGlory Status Code: ${response.statusCode}\n");
+    return new Response.serverError();
+  }
+
+  Future<int> saveMatches(List<VGMatch> matches) async {
+    if (matches.length == 0) {
+      return 0;
+    }
+
+    List<String> matchIDs = matches.map((m) => m.id).toList();
+
+    var query = new Query<VGMatch>()
+      ..where.id = whereIn(matchIDs)
+      ..returningProperties((m) => [m.id]);
+    var existingMatches =  await query.fetch();
+    var existingMatchIDs = existingMatches.map((m) => m.id).toList();
+
+    List<VGMatch> newMatches = matches.where((m) => !existingMatchIDs.contains(m.id)).toList();
+
+    await Future.forEach(newMatches, ((VGMatch match) async {
+      var matchQuery = new Query<VGMatch>()
+        ..values.id = match.id
+        ..values.duration = match.duration;
+      var savedMatch = await matchQuery.insert();
+
+      await Future.forEach(match.participants, ((Participant participant) async {
+        participant.match = savedMatch;
+        var pQuery = new Query<Participant>()
+          ..values = participant;
+        await pQuery.insert();
+      }));
+    }));
+
+    return newMatches.length;
   }
 }
