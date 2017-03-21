@@ -119,6 +119,11 @@ class GloryBackendSink extends RequestSink {
       .pipe(new Authorizer.basic(authServer))
       .generate(() => new MatchDataController());
 
+    router
+      .route("/admin/matchups/generate")
+      .pipe(new Authorizer.basic(authServer))
+      .generate(() => new MatchupGenerationController());
+
     router.route("/characters").generate(() => new CharacterController());
     router.route("/data").generate(() => new DataController());
     router.route("/health").generate(() => new HealthController());

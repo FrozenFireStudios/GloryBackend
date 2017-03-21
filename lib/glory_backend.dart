@@ -20,3 +20,4 @@ export 'controller/item_controller.dart';
 export 'controller/match_controller.dart';
 export 'controller/match_data_controller.dart';
 export 'controller/matchup_controller.dart';
+export 'controller/matchup_generation_controller.dart';
