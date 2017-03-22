@@ -118,6 +118,8 @@ class Participant extends ManagedObject<_Participant> implements _Participant {
 class _Participant {
   @ManagedColumnAttributes(primaryKey: true, unique: true, indexed: true)
   String id;
+
+  @ManagedColumnAttributes(indexed: true)
   String characterName;
   String buildType;
   String role;

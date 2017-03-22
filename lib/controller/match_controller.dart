@@ -21,7 +21,7 @@ class MatchController extends HTTPController {
     var queryParams = {
       "filter[playerNames]": playerName,
       "filter[createdAt-start]": createdAt,
-      "filter[gameMode]": "ranked,casual,private",
+      "filter[gameMode]": "ranked",
       "page[limit]": "50",
       "page[offset]": "$offset"
     };

@@ -48,16 +48,20 @@ Active: Reduces attack speed of nearby enemies by 65% for 5 seconds in a 4-meter
     var matchupQuery1 = new Query<Matchup>()
       ..values.character = "*character1*"
       ..values.otherCharacter = "*character2*"
-      ..values.againstValue = 50
-      ..values.withValue = 75;
+      ..values.gamesWith = 2
+      ..values.gamesWithWon = 1
+      ..values.gamesAgainst = 4
+      ..values.gamesAgainstWon = 3;
 
     await matchupQuery1.insert();
 
     var matchupQuery2 = new Query<Matchup>()
       ..values.character = "*character3*"
       ..values.otherCharacter = "*character1*"
-      ..values.againstValue = 60
-      ..values.withValue = 30;
+      ..values.gamesWith = 10
+      ..values.gamesWithWon = 6
+      ..values.gamesAgainst = 9
+      ..values.gamesAgainstWon = 3;
 
     await matchupQuery2.insert();
   });
@@ -112,15 +116,19 @@ Active: Reduces attack speed of nearby enemies by 65% for 5 seconds in a 4-meter
           "id": 1,
           "character": "*character1*",
           "otherCharacter": "*character2*",
-          "againstValue": 50,
-          "withValue": 75
+          "gamesWith": 2,
+          "gamesWithWon": 1,
+          "gamesAgainst": 4,
+          "gamesAgainstWon": 3
         },
         {
           "id": 2,
           "character": "*character3*",
           "otherCharacter": "*character1*",
-          "againstValue": 60,
-          "withValue": 30
+          "gamesWith": 10,
+          "gamesWithWon": 6,
+          "gamesAgainst": 9,
+          "gamesAgainstWon": 3
         }
       ]
     }));

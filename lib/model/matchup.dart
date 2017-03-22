@@ -10,6 +10,9 @@ class _Matchup {
 
   String character;
   String otherCharacter;
-  int againstValue;
-  int withValue;
+
+  int gamesAgainst;
+  int gamesAgainstWon;
+  int gamesWith;
+  int gamesWithWon;
 }

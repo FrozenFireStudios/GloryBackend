@@ -29,7 +29,7 @@ class _Character {
   @managedPrimaryKey
   int id;
 
-  @ManagedColumnAttributes(unique: true)
+  @ManagedColumnAttributes(indexed: true, unique: true)
   String name;
 
   @ManagedColumnAttributes(unique: true)
