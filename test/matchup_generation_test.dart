@@ -77,10 +77,30 @@ Future main() async {
   });
 
   test("Generate Matchups", () async {
-    var req = app.client.clientAuthenticatedRequest("/admin/matchups/generate");
-    var response = await req.post();
+    var generateReq1 = app.client.clientAuthenticatedRequest("/admin/matchups/generate/0");
+    var genResponse1 = await generateReq1.post();
 
-    expect(response, hasResponse(200, "Saved 16 matchups"));
+    expect(genResponse1, hasResponse(200, "Saved 4 matchups"));
+
+    var generateReq2 = app.client.clientAuthenticatedRequest("/admin/matchups/generate/1");
+    var genResponse2 = await generateReq2.post();
+
+    expect(genResponse2, hasResponse(200, "Saved 4 matchups"));
+
+    var generateReq3 = app.client.clientAuthenticatedRequest("/admin/matchups/generate/2");
+    var genResponse3 = await generateReq3.post();
+
+    expect(genResponse3, hasResponse(200, "Saved 4 matchups"));
+
+    var generateReq4 = app.client.clientAuthenticatedRequest("/admin/matchups/generate/3");
+    var genResponse4 = await generateReq4.post();
+
+    expect(genResponse4, hasResponse(200, "Saved 4 matchups"));
+
+    var generateReq5 = app.client.clientAuthenticatedRequest("/admin/matchups/generate/4");
+    var genResponse5 = await generateReq5.post();
+
+    expect(genResponse5, hasStatus(404));
 
     var req2 = app.client.request("/matchups");
     var matchups = await req2.get();
