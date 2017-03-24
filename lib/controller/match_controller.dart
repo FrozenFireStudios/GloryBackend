@@ -15,14 +15,14 @@ class MatchController extends HTTPController {
       ..where.tier = whereEqualTo(3);
     List<Item> items = await itemQuery.fetch();
 
-    int offset = ((page ?? 1) - 1) * 50;
+    int offset = ((page ?? 1) - 1) * 25;
     createdAt ??= "2017-03-01T00:00:00Z";
 
     var queryParams = {
       "filter[playerNames]": playerName,
       "filter[createdAt-start]": createdAt,
       "filter[gameMode]": "ranked",
-      "page[limit]": "50",
+      "page[limit]": "25",
       "page[offset]": "$offset"
     };
 
